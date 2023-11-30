@@ -1,0 +1,137 @@
+<!-- create_task.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>任务管理</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .dialog {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #f9f9f9;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+<!--        #modelFile {-->
+<!--            display: none; /* 隐藏 input 元素 */-->
+<!--        }-->
+<!--        .upload-btn {-->
+<!--            background-color: #4CAF50; /* 设置背景颜色 */-->
+<!--            color: white; /* 设置文本颜色 */-->
+<!--            padding: 8px 16px; /* 设置内边距 */-->
+<!--            border-radius: 4px; /* 设置圆角 */-->
+<!--            cursor: pointer; /* 设置光标为手型 */-->
+<!--        }-->
+</style>
+</head>
+<body>
+    <button id="newTaskBtn">New task</button>
+    <div id="newTaskDialog" class="dialog">
+        {% csrf_token %}
+        <label for="platform">Platform:</label>
+        <select id="platform">
+            <option value="qcom">QCOM</option>
+            <option value="mtk">MTK</option>
+        </select>
+        <br><br>
+        <input type="file" id="modelFile">
+<!--        <label for="modelFile" class="upload-btn">select file</label>-->
+        <button id="createTaskBtn">submit</button>
+    </div>
+    <table id="taskTable">
+        <tr>
+            <th>Model file</th>
+			<th>Platform</th>
+            <th>Status</th>
+            <th>Result file</th>
+        </tr>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.model_file_name }}</td>
+            <td>{{ task.platform }}</td>
+            <td>{{ task.status }}</td>
+            <td>{{ task.result_file_name }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <script>
+        // 获取或设置csrf token
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+
+        // 设置ajax全局选项
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+
+
+        $('#newTaskBtn').click(function() {
+           $('#newTaskDialog').show();
+        });
+
+        // 处理创建任务按钮点击事件
+        $("#createTaskBtn").click(function() {
+            var platform = $("#platform").val();
+            var modelFile = $("#modelFile")[0].files[0];
+
+            var formData = new FormData();
+            formData.append('platform', platform);
+            formData.append('modelFile', modelFile);
+
+            $.ajax({
+                type: 'POST',
+                url: '/create_task/',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    alert('Task completed');
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    alert('Error occurred while creating task');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
