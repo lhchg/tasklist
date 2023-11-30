@@ -24,27 +24,27 @@ class Task:
         self.status = status
         self.result_file_name = result_file_name
 
+def save_file(model_file):
+    # 计算文件大小
+    file_size_bytes = model_file.size
+    file_size_kb = file_size_bytes / 1024
+    file_size_mb = file_size_kb / 1024
+
+    # 创建文件大小信息字符串
+    file_size_info = f'文件大小：{file_size_mb:.2f} MB'
+
+    # 将文件大小信息写入到文件中
+    # name, ext = os.path.splitext(model_file.name)
+    # result_file = "upload/" + name + "_result_" + ext
+    save_path = "upload/" + model_file.name
+    filename = os.path.join(save_path)
+
+    with open(filename, 'w') as f:
+        f.write(file_size_info)
+
 def create_task(request):
     if request.method == 'POST':
-        # 获取上传的文件对象
         model_file = request.FILES['modelFile']
-
-        # 计算文件大小
-        file_size_bytes = model_file.size
-        file_size_kb = file_size_bytes / 1024
-        file_size_mb = file_size_kb / 1024
-
-        # 创建文件大小信息字符串
-        file_size_info = f'文件大小：{file_size_mb:.2f} MB'
-
-        # 将文件大小信息写入到文件中
-        name, ext = os.path.splitext(model_file.name)
-        result_file = "upload/" + name + "_result_" + ext
-        filename = os.path.join(result_file)
-
-        with open(filename, 'w') as f:
-            f.write(file_size_info)
-
-        # 其他任务处理逻辑...
+        save_file(model_file)
 
     return HttpResponse('task completed')
