@@ -9,6 +9,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 def hello(request):
     return HttpResponse("Hello world ! ")
 
+
 def runoob(request):
     conn = sqlite3.connect('test.db')
     c = conn.cursor()
@@ -17,14 +18,15 @@ def runoob(request):
     conn.close()
     return render(request, "runoob.html", {"tasks" : contents})
 
+def insert_database(model_file, platform):
+    conn = sqlite3.connect('test.db')
+    c = conn.cursor()
+    c.execute("INSERT INTO TASK (MODULE_FILE_NAME,PALTFORM, STATUS)\
+    VALUES (?, ?, ?)", (model_file.name, platform, "progress..."))
+    conn.commit()
+    conn.close()
 
-class Task:
-    def __init__(self, model_file_name, status, result_file_name):
-        self.model_file_name = model_file_name
-        self.status = status
-        self.result_file_name = result_file_name
-
-def save_file(model_file):
+def save_file(model_file, platform):
     # 计算文件大小
     file_size_bytes = model_file.size
     file_size_kb = file_size_bytes / 1024
@@ -39,12 +41,15 @@ def save_file(model_file):
     save_path = "upload/" + model_file.name
     filename = os.path.join(save_path)
 
+    insert_database(model_file, platform)
+
     with open(filename, 'w') as f:
         f.write(file_size_info)
 
 def create_task(request):
     if request.method == 'POST':
         model_file = request.FILES['modelFile']
-        save_file(model_file)
+        platform = request.POST.get('platform')
+        save_file(model_file, platform)
 
     return HttpResponse('task completed')
