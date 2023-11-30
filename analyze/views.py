@@ -9,7 +9,7 @@ import sqlite3
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from . import settings
 import _thread
-
+from django.contrib.staticfiles.storage import staticfiles_storage
 
 
 def insert_database(model_file, platform):
@@ -28,7 +28,7 @@ def update_database(result_file, model_file):
     conn.close()
 
 def save_file(model_file, platform):
-    save_path = os.path.join(settings.MEDIA_ROOT, model_file.name)
+    save_path = os.path.join(settings.MODEL_ROOT, model_file.name)
     with open(save_path, 'wb') as destination:
         for chunk in model_file.chunks():
             destination.write(chunk)
@@ -56,12 +56,30 @@ def progress(model_file, platform):
 
 
 def runoob(request):
+
     conn = sqlite3.connect('test.db')
     c = conn.cursor()
     c.execute('SELECT * FROM TASK')
     contents = c.fetchall()
     conn.close()
-    return render(request, "runoob.html", {"tasks" : contents})
+
+    tasks = []
+
+    for content in contents:
+        upload_file = "upload/" + content[1]
+        model_file_exists = os.path.exists(upload_file)
+        content = content + (model_file_exists,)
+        if content[4] is not None:
+            result_file = "result/" + content[4]
+            result_file_exists = os.path.exists(result_file)
+
+        else:
+            result_file_exists = False
+        content = content + (result_file_exists, )
+        tasks.append(content)
+
+
+    return render(request, "runoob.html", {"tasks" : tasks})
 
 
 

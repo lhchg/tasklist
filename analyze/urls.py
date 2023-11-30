@@ -18,9 +18,13 @@ from django.contrib import admin
 from django.urls import path
 from . import views
 from django.urls import re_path as url
+from django.views.static import serve
+from . import settings
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('', views.runoob),
     url(r'^create_task/$', views.create_task),
+    path('upload/<path:path>/', serve, {'document_root': settings.MODEL_ROOT}),
+    path('result/<path:path>/', serve, {'document_root': settings.RESULT_ROOT}),
 ]

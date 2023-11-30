@@ -69,10 +69,18 @@
         </tr>
         {% for task in tasks %}
         <tr>
-            <td>{{ task.1 }}</td>
+            {% if task.5 %}
+                <td><a href="/upload/{{ task.1 }}">{{ task.1 }}</a></td>
+            {% else %}
+                <td>{{ task.1 }}</td>
+            {% endif %}
             <td>{{ task.2 }}</td>
             <td>{{ task.3 }}</td>
-            <td>{{ task.4 }}</td>
+            {% if task.6 %}
+                <td><a href="/result/{{ task.4 }}" download="">{{ task.4 }}</a></td>
+            {% else %}
+                <td>{{ task.4 }}</td>
+            {% endif %}
         </tr>
         {% endfor %}
     </table>

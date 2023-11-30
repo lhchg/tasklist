@@ -27,8 +27,9 @@ SECRET_KEY = "django-insecure-gsee!110nn3aoxpz&5p86vz$(07s_e5si&2&k3kch8(&1=fduc
 DEBUG = True
 
 ALLOWED_HOSTS = ['109.144.2.161']
-MEDIA_ROOT = os.path.join(BASE_DIR, 'upload')
+MODEL_ROOT = os.path.join(BASE_DIR, 'upload')
 #MEDIA_URL = '/upload/'
+RESULT_ROOT = os.path.join(BASE_DIR, 'result')
 
 
 # Application definition
