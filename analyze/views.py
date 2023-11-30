@@ -10,9 +10,12 @@ def hello(request):
     return HttpResponse("Hello world ! ")
 
 def runoob(request):
-
-
-    return render(request, "runoob.html", {})
+    conn = sqlite3.connect('test.db')
+    c = conn.cursor()
+    c.execute('SELECT * FROM TASK')
+    contents = c.fetchall()
+    conn.close()
+    return render(request, "runoob.html", {"tasks" : contents})
 
 
 class Task:
@@ -22,9 +25,7 @@ class Task:
         self.result_file_name = result_file_name
 
 def create_task(request):
-    print(123)
     if request.method == 'POST':
-        print(456)
         # 获取上传的文件对象
         model_file = request.FILES['modelFile']
 
