@@ -55,7 +55,7 @@ def upload_listen():
 def start_upload_service(request):
     # 启动文件上传服务
     threading.Thread(target=upload_listen).start()
-    return HttpResponse('文件上传服务已完成！')
+    return HttpResponse('start upload！')
 
 
 def insert_database(model_file, platform):
@@ -80,7 +80,7 @@ def save_file(model_file, platform):
     return id
 
 def progress(id, model_file, platform):
-    #time.sleep(20)
+    time.sleep(10)
     cal_file = "upload/" + model_file
     size = os.path.getsize(cal_file)
     file_size_bytes = size

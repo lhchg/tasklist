@@ -123,16 +123,15 @@
            $('#newTaskDialog').show();
         });
 
-
         $("#createTaskBtn").click(function() {
 
             var platform = $("#platform").val();
             var modelFile = $('#uploaded-filename').text()
 
-                if (modelFile === "no file") {
-                    alert('please upload file');
-                    return;
-                }
+            if (modelFile === "no file" || modelFile === "wait for file") {
+                alert('please upload file');
+                return;
+            }
 
             var formData = new FormData();
             formData.append('platform', platform);
@@ -155,8 +154,7 @@
                 }
             });
         });
-    </script>
-    <script>
+
         $('#uploadBtn').click(function(){
             startUploadService()
         });
@@ -168,7 +166,7 @@
                 contentType: false,
                 success: function(response) {
                     console.log(response);
-                    $('#uploaded-filename').text("等待文件上传");
+                    $('#uploaded-filename').text("wait for file");
                     get_uploaded_filename()
                 },
                 error: function(xhr, status, error) {
@@ -176,7 +174,6 @@
                 }
             });
         };
-
 
         function get_uploaded_filename() {
           $.ajax({
@@ -189,6 +186,8 @@
             }
           });
         }
+
     </script>
+
 </body>
 </html>
