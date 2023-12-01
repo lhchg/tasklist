@@ -117,7 +117,7 @@ def runoob(request):
         upload_file = "upload/" + content[2]
         model_file_exists = os.path.exists(upload_file)
         content = content + (model_file_exists,)
-        if content[4] is not None:
+        if content[5] is not None:
             result_file = "result/" + content[5]
             result_file_exists = os.path.exists(result_file)
 
