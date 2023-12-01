@@ -1,3 +1,7 @@
+
+import sqlite3
+from datetime import datetime, timedelta
+import pytz
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import render
@@ -25,8 +29,6 @@ class FileUploadService(rpyc.Service):
 
     def exposed_upload_file(self, filepath, content):
         #time.sleep(10)
-        print(678)
-        print(filepath)
         replaced_string = filepath.replace('\\', '/')
         filename = replaced_string.split('/')[-1]
         savefile = "upload/" + filename
@@ -34,7 +36,6 @@ class FileUploadService(rpyc.Service):
             file.write(content)
 
         if FileUploadService.server:
-            print(789)
             FileUploadService.uploaded_filename = filename
             time.sleep(2)
             FileUploadService.server.close()
@@ -47,14 +48,12 @@ def get_uploaded_filename(request):
     return HttpResponse(uploaded_filename)
 
 def upload_listen():
-    print(456)
     server = ThreadedServer(FileUploadService, port=12345)
     FileUploadService.server = server
     server.start()
 
 def start_upload_service(request):
     # 启动文件上传服务
-    print(123)
     threading.Thread(target=upload_listen).start()
     return HttpResponse('文件上传服务已完成！')
 
@@ -110,18 +109,21 @@ def runoob(request):
     conn.close()
 
     tasks = []
-
     for content in contents:
-        upload_file = "upload/" + content[1]
+        timestamp = content[1]
+        timestamp = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S') + timedelta(hours=8)
+        timestamp_str = timestamp.strftime('%Y-%m-%d %H:%M:%S')
+
+        upload_file = "upload/" + content[2]
         model_file_exists = os.path.exists(upload_file)
         content = content + (model_file_exists,)
         if content[4] is not None:
-            result_file = "result/" + content[4]
+            result_file = "result/" + content[5]
             result_file_exists = os.path.exists(result_file)
 
         else:
             result_file_exists = False
-        content = content + (result_file_exists, )
+        content = content + (result_file_exists, timestamp_str)
         tasks.append(content)
 
 

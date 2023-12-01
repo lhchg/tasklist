@@ -56,6 +56,7 @@
     </div>
     <table id="taskTable">
         <tr>
+            <th>Data</th>
             <th>Model file</th>
 			<th>Platform</th>
             <th>Status</th>
@@ -63,17 +64,18 @@
         </tr>
         {% for task in tasks %}
         <tr>
-            {% if task.5 %}
-                <td><a href="/upload/{{ task.1 }}">{{ task.1 }}</a></td>
-            {% else %}
-                <td>{{ task.1 }}</td>
-            {% endif %}
-            <td>{{ task.2 }}</td>
-            <td>{{ task.3 }}</td>
+            <td>{{ task.8 }}</td>
             {% if task.6 %}
-                <td><a href="/result/{{ task.4 }}" download="">{{ task.4 }}</a></td>
+                <td><a href="/upload/{{ task.2 }}">{{ task.2 }}</a></td>
             {% else %}
-                <td>{{ task.4 }}</td>
+                <td>{{ task.2 }}</td>
+            {% endif %}
+            <td>{{ task.3 }}</td>
+            <td>{{ task.4 }}</td>
+            {% if task.7 %}
+                <td><a href="/result/{{ task.5 }}" download="">{{ task.5 }}</a></td>
+            {% else %}
+                <td>{{ task.5 }}</td>
             {% endif %}
         </tr>
         {% endfor %}
