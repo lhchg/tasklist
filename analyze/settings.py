@@ -30,6 +30,7 @@ ALLOWED_HOSTS = ['109.144.2.161']
 MODEL_ROOT = os.path.join(BASE_DIR, 'upload')
 #MEDIA_URL = '/upload/'
 RESULT_ROOT = os.path.join(BASE_DIR, 'result')
+EXE_ROOT = os.path.join(BASE_DIR, 'exe')
 
 
 # Application definition
