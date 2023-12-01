@@ -1,58 +1,104 @@
-import time
-
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import render
 from django.core.files.storage import default_storage, Storage
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.contrib.staticfiles.storage import staticfiles_storage
+from django.http import HttpResponse
+from rpyc.utils.server import ThreadedServer
+from . import settings
+import time
 import os
 import sqlite3
-from django.core.files.uploadedfile import InMemoryUploadedFile
-from . import settings
 import _thread
-from django.contrib.staticfiles.storage import staticfiles_storage
+import rpyc
+import threading
+
+class FileUploadService(rpyc.Service):
+    uploaded_filename = None
+    server = None
+    def on_connect(self, conn):
+        pass
+
+    def on_disconnect(self, conn):
+        pass
+
+    def exposed_upload_file(self, filepath, content):
+        #time.sleep(10)
+        print(678)
+        print(filepath)
+        replaced_string = filepath.replace('\\', '/')
+        filename = replaced_string.split('/')[-1]
+        savefile = "upload/" + filename
+        with open(savefile, 'wb') as file:
+            file.write(content)
+
+        if FileUploadService.server:
+            print(789)
+            FileUploadService.uploaded_filename = filename
+            time.sleep(2)
+            FileUploadService.server.close()
+
+def get_uploaded_filename(request):
+    uploaded_filename = None
+    while uploaded_filename is None:
+        uploaded_filename = FileUploadService.uploaded_filename
+        FileUploadService.uploaded_filename = None
+    return HttpResponse(uploaded_filename)
+
+def upload_listen():
+    print(456)
+    server = ThreadedServer(FileUploadService, port=12345)
+    FileUploadService.server = server
+    server.start()
+
+def start_upload_service(request):
+    # 启动文件上传服务
+    print(123)
+    threading.Thread(target=upload_listen).start()
+    return HttpResponse('文件上传服务已完成！')
 
 
 def insert_database(model_file, platform):
     conn = sqlite3.connect('test.db')
     c = conn.cursor()
     c.execute("INSERT INTO TASK (MODULE_FILE_NAME,PALTFORM, STATUS)\
-    VALUES (?, ?, ?)", (model_file.name, platform, "progress..."))
+    VALUES (?, ?, ?)", (model_file, platform, "progress..."))
+    inserted_id = c.lastrowid
     conn.commit()
     conn.close()
+    return inserted_id
 
-def update_database(result_file, model_file):
+def update_database(id, result_file, model_file):
     conn = sqlite3.connect('test.db')
     c = conn.cursor()
-    c.execute("UPDATE TASK set STATUS = 'done', RESULT_FILE = ? where MODULE_FILE_NAME= ?", (result_file, model_file.name))
+    c.execute("UPDATE TASK set STATUS = 'done', RESULT_FILE = ? where ID= ?", (result_file, id))
     conn.commit()
     conn.close()
 
 def save_file(model_file, platform):
-    save_path = os.path.join(settings.MODEL_ROOT, model_file.name)
-    with open(save_path, 'wb') as destination:
-        for chunk in model_file.chunks():
-            destination.write(chunk)
+    id = insert_database(model_file, platform)
+    return id
 
-    insert_database(model_file, platform)
-
-def progress(model_file, platform):
+def progress(id, model_file, platform):
     #time.sleep(20)
-    file_size_bytes = model_file.size
+    cal_file = "upload/" + model_file
+    size = os.path.getsize(cal_file)
+    file_size_bytes = size
     file_size_kb = file_size_bytes / 1024
     file_size_mb = file_size_kb / 1024
 
     file_size_info = f'file size is：{file_size_mb:.2f} MB'
 
-    name, ext = os.path.splitext(model_file.name)
+    name, ext = os.path.splitext(model_file)
     result_path = "result/"
     result_file = name + "_result" + ".txt"
-    # result_file = "result/" + name + "_result" + ".txt"
     filename = os.path.join(result_path + result_file)
 
     with open(filename, 'w') as f:
         f.write(file_size_info + "\n")
         f.write(platform)
-    update_database(result_file, model_file)
+    update_database(id, result_file, model_file)
 
 
 def runoob(request):
@@ -85,13 +131,13 @@ def runoob(request):
 
 def create_task(request):
     if request.method == 'POST':
-        model_file = request.FILES['modelFile']
+        model_file = request.POST.get('modelFile')
         platform = request.POST.get('platform')
 
-        save_file(model_file, platform)
+        id = save_file(model_file, platform)
         try:
-            _thread.start_new_thread(progress, (model_file, platform))
+            _thread.start_new_thread(progress, (id, model_file, platform))
         except:
-            return HttpResponse("something wrong")
+            return HttpResponse('something error')
 
     return HttpResponse('task completed')

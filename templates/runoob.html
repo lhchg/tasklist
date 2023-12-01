@@ -33,16 +33,7 @@
             background-color: #f5f5f5;
         }
 
-<!--        #modelFile {-->
-<!--            display: none; /* 隐藏 input 元素 */-->
-<!--        }-->
-<!--        .upload-btn {-->
-<!--            background-color: #4CAF50; /* 设置背景颜色 */-->
-<!--            color: white; /* 设置文本颜色 */-->
-<!--            padding: 8px 16px; /* 设置内边距 */-->
-<!--            border-radius: 4px; /* 设置圆角 */-->
-<!--            cursor: pointer; /* 设置光标为手型 */-->
-<!--        }-->
+
 </style>
 </head>
 <body>
@@ -56,8 +47,10 @@
             <option value="mtk">MTK</option>
         </select>
         <br><br>
-        <input type="file" id="modelFile">
-<!--        <label for="modelFile" class="upload-btn">select file</label>-->
+
+        <button id="uploadBtn">start upload file</button>
+        <span id="uploaded-filename">no file</span>
+
         <button id="createTaskBtn">submit</button>
     </div>
     <table id="taskTable">
@@ -120,10 +113,16 @@
            $('#newTaskDialog').show();
         });
 
-        // 处理创建任务按钮点击事件
+
         $("#createTaskBtn").click(function() {
+
             var platform = $("#platform").val();
-            var modelFile = $("#modelFile")[0].files[0];
+            var modelFile = $('#uploaded-filename').text()
+
+                if (modelFile === "no file") {
+                    alert('please upload file');
+                    return;
+                }
 
             var formData = new FormData();
             formData.append('platform', platform);
@@ -136,14 +135,50 @@
                 processData: false,
                 contentType: false,
                 success: function(response) {
+                    $('#uploaded-filename').text("no file");
                     alert('Task completed');
                     location.reload();
                 },
                 error: function(xhr, status, error) {
+                    $('#uploaded-filename').text("no file");
                     alert('Error occurred while creating task');
                 }
             });
         });
+    </script>
+    <script>
+        $('#uploadBtn').click(function(){
+            startUploadService()
+        });
+        var startUploadService = function() {
+            $.ajax({
+                url: '/start_upload_service/',
+                type: 'POST',
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    console.log(response);
+                    $('#uploaded-filename').text("等待文件上传");
+                    get_uploaded_filename()
+                },
+                error: function(xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        };
+
+
+        function get_uploaded_filename() {
+          $.ajax({
+            url: '/get_uploaded_filename/',
+            success: function(data) {
+              $('#uploaded-filename').text(data);
+            },
+            error: function() {
+              console.log('获取文件名失败');
+            }
+          });
+        }
     </script>
 </body>
 </html>
