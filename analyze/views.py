@@ -1,16 +1,7 @@
-
-import sqlite3
 from datetime import datetime, timedelta
-import pytz
-from django.http import HttpResponse
 from django.shortcuts import render
-from django.shortcuts import render
-from django.core.files.storage import default_storage, Storage
-from django.core.files.uploadedfile import InMemoryUploadedFile
-from django.contrib.staticfiles.storage import staticfiles_storage
 from django.http import HttpResponse
 from rpyc.utils.server import ThreadedServer
-from . import settings
 import time
 import os
 import sqlite3
