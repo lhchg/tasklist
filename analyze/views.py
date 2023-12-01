@@ -39,12 +39,13 @@ def get_uploaded_filename(request):
     return HttpResponse(uploaded_filename)
 
 def upload_listen():
+    if FileUploadService.server:
+        FileUploadService.server.close()
     server = ThreadedServer(FileUploadService, port=12345)
     FileUploadService.server = server
     server.start()
 
 def start_upload_service(request):
-    # 启动文件上传服务
     threading.Thread(target=upload_listen).start()
     return HttpResponse('start upload！')
 
