@@ -30,4 +30,6 @@ urlpatterns = [
     path('exe/<path:path>/', serve, {'document_root': settings.EXE_ROOT}),
     path('start_upload_service/', views.start_upload_service, name='start_upload_service'),
     path('get_uploaded_filename/', views.get_uploaded_filename, name='get_uploaded_filename'),
+    path('lock_click_state/<str:client_id>/', views.lock_click_state, name='lock_click_state'),
 ]
+
