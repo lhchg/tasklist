@@ -20,3 +20,28 @@
     <button id="createTaskBtn">submit</button>
 </div>
 ...
+<script>
+    document.getElementById('createTaskBtn').addEventListener('click', function() {
+        var formData = new FormData();
+        var fileInput = document.getElementById('modelFileInput');
+        var platform = document.getElementById('platform').value;
+        if (fileInput.files.length > 0) {
+            formData.append('uploaded_file', fileInput.files[0]);
+        }
+        formData.append('platform', platform);
+
+        $.ajax({
+            url: '/create_task',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                // handle success
+            },
+            error: function(error) {
+                // handle error
+            }
+        });
+    });
+</script>
