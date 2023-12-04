@@ -8,11 +8,13 @@ import sqlite3
 import _thread
 import rpyc
 import threading
+from threading import Lock
 
 class FileUploadService(rpyc.Service):
     uploaded_filename = None
     server = None
     click = False
+    lock = Lock()  # Adding a class-level lock attribute for thread safety
     def on_connect(self, conn):
         print("on_connect")
         pass
@@ -21,17 +23,20 @@ class FileUploadService(rpyc.Service):
         print("on_disconnect")
         pass
     def exposed_get_click(self):
-        print("exposed_get_click")
-        print(self.click)
-        return self.click
+        with FileUploadService.lock:  # Acquire the lock
+            print("exposed_get_click")
+            print(self.click)
+            return self.click  # Release the lock automatically when the block exits
 
     def exposed_set_click(self, click:bool):
-        print("exposed_set_click")
-        FileUploadService.click = click
+        with FileUploadService.lock:  # Acquire the lock
+            print("exposed_set_click")
+            FileUploadService.click = click  # Release the lock automatically when the block exits
 
     def exposed_upload_file(self, filepath, content):
         #time.sleep(10)
-        FileUploadService.click = False
+        with FileUploadService.lock:  # Acquire the lock
+            FileUploadService.click = False  # Release the lock automatically when the block exits
         replaced_string = filepath.replace('\\', '/')
         filename = replaced_string.split('/')[-1]
         savefile = "upload/" + filename
