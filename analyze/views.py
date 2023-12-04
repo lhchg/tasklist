@@ -1,3 +1,4 @@
+from analyze.views import threading
 from datetime import datetime, timedelta
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -7,12 +8,13 @@ import os
 import sqlite3
 import _thread
 import rpyc
-import threading
+from threading import Lock, Thread
 
 class FileUploadService(rpyc.Service):
     uploaded_filename = None
     server = None
     click = False
+    lock = Lock()
     def on_connect(self, conn):
         print("on_connect")
         pass
@@ -22,12 +24,15 @@ class FileUploadService(rpyc.Service):
         pass
     def exposed_get_click(self):
         print("exposed_get_click")
-        print(self.click)
-        return self.click
+        with self.lock:
+            click_value = self.click
+        print(click_value)
+        return click_value
 
     def exposed_set_click(self, click:bool):
         print("exposed_set_click")
-        FileUploadService.click = click
+        with FileUploadService.lock:
+            FileUploadService.click = click
 
     def exposed_upload_file(self, filepath, content):
         #time.sleep(10)
