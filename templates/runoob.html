@@ -95,9 +95,10 @@
 
         <button id="uploadBtn">start upload file</button>
         <span id="uploaded-filename">no file</span>
+
         <br><br>
 
-        <button id="createTaskBtn">submit</button>
+        <button id="createTaskBtn"  style="position: absolute; bottom: 10px; right: 10px;">submit</button>
     </div>
     <table id="taskTable">
         <tr>
@@ -130,7 +131,6 @@
         $("#closeBtn").click(function() {
             $('#newTaskDialog').hide();
         });
-        // 获取或设置csrf token
         function getCookie(name) {
             var cookieValue = null;
             if (document.cookie && document.cookie !== '') {
@@ -147,7 +147,6 @@
         }
         var csrftoken = getCookie('csrftoken');
 
-        // 设置ajax全局选项
         $.ajaxSetup({
             beforeSend: function(xhr, settings) {
                 if (!this.crossDomain) {

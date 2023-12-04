@@ -26,7 +26,9 @@ class FileUploadService(rpyc.Service):
         filename = replaced_string.split('/')[-1]
         savefile = "upload/" + filename
         with open(savefile, 'wb') as file:
+            print("saving file")
             file.write(content)
+            print("file saved")
 
         if FileUploadService.server:
             FileUploadService.uploaded_filename = filename
@@ -34,10 +36,13 @@ class FileUploadService(rpyc.Service):
             FileUploadService.server.close()
 
 def get_uploaded_filename(request):
+    print("get_uploaded_filename")
     uploaded_filename = None
     while uploaded_filename is None:
+        #print(uploaded_filename)
         uploaded_filename = FileUploadService.uploaded_filename
         FileUploadService.uploaded_filename = None
+    print(uploaded_filename)
     return HttpResponse(uploaded_filename)
 
 def upload_listen():
