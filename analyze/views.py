@@ -15,7 +15,7 @@ class FileUploadService(rpyc.Service):
     click = False
     def on_connect(self, conn):
         print("on_connect")
-        pass
+        self.click = False # Initialize as an instance variable
 
     def on_disconnect(self, conn):
         print("on_disconnect")
@@ -27,11 +27,11 @@ class FileUploadService(rpyc.Service):
 
     def exposed_set_click(self, click:bool):
         print("exposed_set_click")
-        FileUploadService.click = click
+        self.click = click
 
     def exposed_upload_file(self, filepath, content):
         #time.sleep(10)
-        FileUploadService.click = False
+        self.click = False
         replaced_string = filepath.replace('\\', '/')
         filename = replaced_string.split('/')[-1]
         savefile = "upload/" + filename
@@ -55,14 +55,16 @@ def start_server():
     server = ThreadedServer(FileUploadService, port=12345)
     FileUploadService.server = server
     server.start()
-    FileUploadService.exposed_set_click(FileUploadService, True)
+
 
 def upload_listen():
     # if FileUploadService.server:
     #     FileUploadService.server.close()
-    #_thread.start_new_thread(start_server,())
+        #_thread.start_new_thread(start_server,())
+    # Thread safety should be ensured here if multiple threads can access the 'click' variable.
+    # Use thread-local storage or pass the connection instance around so that each client has its own 'click' state.
     print("upload_listen")
-    FileUploadService.click = True
+    # Removed static 'click' setting
 
 
 def start_upload_service(request):
