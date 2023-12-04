@@ -56,10 +56,16 @@
 </style>
 </head>
 <body>
-    <div id="tip">please download and run the tool before upload file</div>
+    <div id="tip">
+        Due to "EMD" policy please use uploadhelper
+        <br>
+        when upload file
+        <br>
+        <td><a href="/exe/uploadHelper.exe">uploadHelper for winows</a></td>
+    </div>
 
     <button id="newTaskBtn">New task</button>
-    <td><a href="/exe/upload_win.exe">upload tool for win</a></td>
+
     <div id="newTaskDialog" class="dialog">
         <span id="closeBtn" style="cursor: pointer; position: absolute; top: 10px; right: 10px; font-size: 20px;">&times;</span>
         {% csrf_token %}
@@ -142,7 +148,7 @@
             var platform = $("#platform").val();
             var modelFile = $('#uploaded-filename').text()
 
-            if (modelFile === "no file" || modelFile === "wait for file") {
+            if (modelFile === "no file" || modelFile === "now, please run uploadHelper") {
                 alert('please upload file');
                 return;
             }
@@ -180,7 +186,7 @@
                 contentType: false,
                 success: function(response) {
                     console.log(response);
-                    $('#uploaded-filename').text("wait for file");
+                    $('#uploaded-filename').text("now, please run uploadHelper");
                     get_uploaded_filename()
                 },
                 error: function(xhr, status, error) {
