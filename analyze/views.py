@@ -1,37 +1,40 @@
-from datetime import datetime, timedelta
-from django.shortcuts import render
-from django.http import HttpResponse
-from rpyc.utils.server import ThreadedServer
-import time
+import _thread
 import os
 import sqlite3
-import _thread
-import rpyc
 import threading
+import time
+from datetime import datetime, timedelta
+from threading import local
+
+import rpyc
+from django.http import HttpResponse
+from django.shortcuts import render
+from rpyc.utils.server import ThreadedServer
+
 
 class FileUploadService(rpyc.Service):
+    thread_local_data = local()
     uploaded_filename = None
     server = None
-    click = False
     def on_connect(self, conn):
         print("on_connect")
-        pass
+        self.thread_local_data.click = False
 
     def on_disconnect(self, conn):
         print("on_disconnect")
         pass
     def exposed_get_click(self):
         print("exposed_get_click")
-        print(self.click)
-        return self.click
+        print(self.thread_local_data.click)
+        return self.thread_local_data.click
 
     def exposed_set_click(self, click:bool):
         print("exposed_set_click")
-        FileUploadService.click = click
+        self.thread_local_data.click = click
 
     def exposed_upload_file(self, filepath, content):
         #time.sleep(10)
-        FileUploadService.click = False
+        self.thread_local_data.click = False
         replaced_string = filepath.replace('\\', '/')
         filename = replaced_string.split('/')[-1]
         savefile = "upload/" + filename
@@ -55,14 +58,12 @@ def start_server():
     server = ThreadedServer(FileUploadService, port=12345)
     FileUploadService.server = server
     server.start()
-    FileUploadService.exposed_set_click(FileUploadService, True)
 
 def upload_listen():
     # if FileUploadService.server:
     #     FileUploadService.server.close()
     #_thread.start_new_thread(start_server,())
     print("upload_listen")
-    FileUploadService.click = True
 
 
 def start_upload_service(request):
