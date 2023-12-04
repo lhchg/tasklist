@@ -72,8 +72,9 @@
         </select>
         <br><br>
 
-        <button id="uploadBtn">start upload file</button>
-        <span id="uploaded-filename">no file</span>
+        <input type="file" id="fileInput" style="display: none;">
+        <label for="fileInput" id="uploadBtn">start upload file</label>
+        <span id="uploaded-filename">no file selected</span>
 
         <button id="createTaskBtn">submit</button>
     </div>
@@ -207,3 +208,42 @@
 
 </body>
 </html>
+        $("#fileInput").change(function() {
+            var file = this.files[0];
+            if (file) {
+                $('#uploaded-filename').text(file.name);
+            }
+        });
+
+        $("#createTaskBtn").click(function() {
+
+            var platform = $("#platform").val();
+            var fileInput = document.getElementById('fileInput');
+            var file = fileInput.files[0];
+
+            if (!file) {
+                alert('please upload file');
+                return;
+            }
+
+            var formData = new FormData();
+            formData.append('platform', platform);
+            formData.append('modelFile', file);
+
+            $.ajax({
+                type: 'POST',
+                url: '/create_task/',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    $('#uploaded-filename').text("no file selected");
+                    alert('Task completed');
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    $('#uploaded-filename').text("no file selected");
+                    alert('Error occurred while creating task');
+                }
+            });
+        });
