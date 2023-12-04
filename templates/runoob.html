@@ -72,7 +72,7 @@
         </select>
         <br><br>
 
-        <button id="uploadBtn">start upload file</button>
+        <input type="file" id="fileInput" accept=".bin" onchange="handleFileSelect(event)" />
         <span id="uploaded-filename">no file</span>
 
         <button id="createTaskBtn">submit</button>
@@ -207,3 +207,7 @@
 
 </body>
 </html>
+        function handleFileSelect(evt) {
+            var file = evt.target.files[0]; // FileList object
+            $('#uploaded-filename').text(file.name);
+        }
