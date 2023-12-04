@@ -1,0 +1,238 @@
+<!-- create_task.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>任务管理</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .dialog {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #f9f9f9;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+         td {
+            max-width: 200px; /* 设置最大宽度为200像素 */
+            overflow: hidden; /* 超出部分隐藏 */
+            text-overflow: ellipsis; /* 超出部分用省略号表示 */
+            white-space: nowrap; /* 不换行 */
+         }
+
+
+</style>
+<style>
+#tip {
+    position: fixed;
+    right: 0;
+    top: 0;
+    padding: 10px;
+    background-color: #f9ed69;
+    border: 1px solid #f08a5d;
+    color: #b83b5e;
+    font-size: 14px;
+}
+#toggleArrow {
+    cursor: pointer;
+    position: absolute;
+    left: -30px; /* Adjust as needed to place the arrow outside the tip box */
+    top: 10px;
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+    line-height: 20px;
+    text-align: center;
+    background-color: #f9ed69;
+    border: 1px solid #f08a5d;
+    user-select: none;
+}
+</style>
+<style>
+    #createTaskBtn {
+    position: absolute; /* 绝对定位 */
+    bottom: 10px; /* 距离底部10px */
+    right: 10px; /* 距离右侧10px */
+}
+</style>
+
+</head>
+<body>
+
+    <button id="newTaskBtn">New task</button>
+
+    <div id="newTaskDialog" class="dialog">
+        <span id="closeBtn" style="cursor: pointer; position: absolute; top: 10px; right: 10px; font-size: 20px;">&times;</span>
+        {% csrf_token %}
+        <label for="platform">Platform:</label>
+        <select id="platform">
+            <option value="qcom">QCOM</option>
+            <option value="mtk">MTK</option>
+        </select>
+        <br><br>
+
+        <input type="file" id="modelFile">
+        <br><br>
+        <button id="createTaskBtn">submit</button>
+    </div>
+    <table id="taskTable">
+        <tr>
+            <th>Data</th>
+            <th>Model file</th>
+			<th>Platform</th>
+            <th>Status</th>
+            <th>Result file</th>
+        </tr>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.8 }}</td>
+            {% if task.6 %}
+                <td><a href="/upload/{{ task.2 }}">{{ task.2 }}</a></td>
+            {% else %}
+                <td>{{ task.2 }}</td>
+            {% endif %}
+            <td>{{ task.3 }}</td>
+            <td>{{ task.4 }}</td>
+            {% if task.7 %}
+                <td><a href="/result/{{ task.5 }}" download="">{{ task.5 }}</a></td>
+            {% else %}
+                <td>{{ task.5 }}</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+
+    <script>
+        $("#closeBtn").click(function() {
+            $('#newTaskDialog').hide();
+        });
+        // 获取或设置csrf token
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+
+        // 设置ajax全局选项
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+
+
+        $('#newTaskBtn').click(function() {
+           $('#newTaskDialog').show();
+        });
+
+        $("#createTaskBtn").click(function() {
+
+            var platform = $("#platform").val();
+            var modelFile = $("#modelFile")[0].files[0];
+
+            var formData = new FormData();
+            formData.append('platform', platform);
+            formData.append('modelFile', modelFile);
+
+            $.ajax({
+                type: 'POST',
+                url: '/create_task_normal/',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    alert('Task completed');
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    alert('Error occurred while creating task');
+                }
+            });
+        });
+
+<!--        $('#uploadBtn').click(function(){-->
+<!--            startUploadService()-->
+<!--        });-->
+<!--        var startUploadService = function() {-->
+<!--            $.ajax({-->
+<!--                url: '/start_upload_service/',-->
+<!--                type: 'POST',-->
+<!--                processData: false,-->
+<!--                contentType: false,-->
+<!--                success: function(response) {-->
+<!--                    console.log(response);-->
+<!--                    $('#uploaded-filename').text("now, please run uploadHelper to select file");-->
+<!--                    get_uploaded_filename()-->
+<!--                },-->
+<!--                error: function(xhr, status, error) {-->
+<!--                    console.log(error);-->
+<!--                }-->
+<!--            });-->
+<!--        };-->
+
+<!--        function get_uploaded_filename() {-->
+<!--          $.ajax({-->
+<!--            url: '/get_uploaded_filename/',-->
+<!--            success: function(data) {-->
+<!--              $('#uploaded-filename').text(data);-->
+<!--            },-->
+<!--            error: function() {-->
+<!--              console.log('获取文件名失败');-->
+<!--            }-->
+<!--          });-->
+<!--        }-->
+
+    </script>
+<!--    <script>-->
+<!--        var tip = document.getElementById('tip');-->
+<!--        var toggleArrow = document.getElementById('toggleArrow');-->
+
+<!--        toggleArrow.addEventListener('click', function() {-->
+<!--            var isTipCollapsed = toggleArrow.innerHTML.charCodeAt(0) === 9664; // Check if the arrow is right-pointing-->
+<!--            if (isTipCollapsed) {-->
+<!--                // Expand the tip and change the arrow to left-pointing-->
+<!--                tip.style.right = '0';-->
+<!--                toggleArrow.innerHTML = '&#9654;'; // Left-pointing arrow-->
+<!--            } else {-->
+<!--                // Collapse the tip and change the arrow to right-pointing-->
+<!--                tip.style.right = '-450px'; // Adjust as needed to hide the tip box, leaving only the arrow visible-->
+<!--                toggleArrow.innerHTML = '&#9664;'; // Right-pointing arrow-->
+<!--            }-->
+<!--        });-->
+<!--    </script>-->
+
+
+</body>
+</html>
