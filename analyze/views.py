@@ -31,6 +31,7 @@ class FileUploadService(rpyc.Service):
 
     def exposed_upload_file(self, filepath, content):
         #time.sleep(10)
+        print("exposed_upload_file")
         FileUploadService.click = False
         replaced_string = filepath.replace('\\', '/')
         filename = replaced_string.split('/')[-1]
@@ -117,7 +118,7 @@ def runoob(request):
         _thread.start_new_thread(start_server, ())
     conn = sqlite3.connect('test.db')
     c = conn.cursor()
-    c.execute('SELECT * FROM TASK')
+    c.execute('SELECT * FROM TASK ORDER BY timestamp DESC')
     contents = c.fetchall()
     conn.close()
 
