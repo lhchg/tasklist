@@ -175,15 +175,16 @@
             startUploadService()
         });
         var startUploadService = function() {
+            var clientId = 'unique_client_id'; // Replace with actual client ID
             $.ajax({
-                url: '/start_upload_service/',
+                url: '/lock_click_state/' + clientId + '/',
                 type: 'POST',
                 processData: false,
                 contentType: false,
                 success: function(response) {
                     console.log(response);
                     $('#uploaded-filename').text("wait for file");
-                    get_uploaded_filename()
+                    get_uploaded_filename(clientId)
                 },
                 error: function(xhr, status, error) {
                     console.log(error);
