@@ -41,17 +41,31 @@ class FileUploadService(rpyc.Service):
         filename = replaced_string.split('/')[-1]
         savefile = "upload/" + filename
         with open(savefile, 'wb') as file:
-            file.write(content)
-
-        if FileUploadService.server:
-            FileUploadService.uploaded_filename = filename
-            time.sleep(2)
 
             # FileUploadService.server.close()
 
+
+@staticmethod
+def get_and_reset_uploaded_filename():
+    with FileUploadService.lock:
+        filename = FileUploadService.uploaded_filename
+        FileUploadService.uploaded_filename = None
+    return filename
+
+def start_condition_variable():
+    with FileUploadService.lock:
+        if FileUploadService.uploaded_filename is not None:
+            FileUploadService.uploaded_filename_condition.notify_all()
 def get_uploaded_filename(request):
-    uploaded_filename = None
-    while uploaded_filename is None:
+    uploaded_filename = FileUploadService.get_and_reset_uploaded_filename()
+    if uploaded_filename is None:
+        # If no filename is set, wait for the notification
+        with FileUploadService.lock:
+            FileUploadService.uploaded_filename_condition.wait()
+            uploaded_filename = FileUploadService.get_and_reset_uploaded_filename()
+    return HttpResponse(uploaded_filename)
+
+def start_server():
         uploaded_filename = FileUploadService.uploaded_filename
         FileUploadService.uploaded_filename = None
     return HttpResponse(uploaded_filename)
