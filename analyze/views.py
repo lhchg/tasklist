@@ -12,15 +12,27 @@ import threading
 class FileUploadService(rpyc.Service):
     uploaded_filename = None
     server = None
+    click = False
     def on_connect(self, conn):
+        print("on_connect")
         pass
 
     def on_disconnect(self, conn):
+        print("on_disconnect")
         pass
+    def exposed_get_click(self):
+        print("exposed_get_click")
+        print(self.click)
+        return self.click
+
+    def exposed_set_click(self, click:bool):
+        print("exposed_set_click")
+        FileUploadService.click = click
 
     def exposed_upload_file(self, filepath, content):
         #time.sleep(10)
         print("exposed_upload_file")
+        FileUploadService.click = False
         replaced_string = filepath.replace('\\', '/')
         filename = replaced_string.split('/')[-1]
         savefile = "upload/" + filename
@@ -30,7 +42,8 @@ class FileUploadService(rpyc.Service):
         if FileUploadService.server:
             FileUploadService.uploaded_filename = filename
             time.sleep(2)
-            FileUploadService.server.close()
+
+            # FileUploadService.server.close()
 
 def get_uploaded_filename(request):
     uploaded_filename = None
@@ -39,12 +52,19 @@ def get_uploaded_filename(request):
         FileUploadService.uploaded_filename = None
     return HttpResponse(uploaded_filename)
 
-def upload_listen():
-    if FileUploadService.server:
-        FileUploadService.server.close()
+def start_server():
     server = ThreadedServer(FileUploadService, port=12345)
     FileUploadService.server = server
     server.start()
+    FileUploadService.exposed_set_click(FileUploadService, True)
+
+def upload_listen():
+    # if FileUploadService.server:
+    #     FileUploadService.server.close()
+    #_thread.start_new_thread(start_server,())
+    print("upload_listen")
+    FileUploadService.click = True
+
 
 def start_upload_service(request):
     threading.Thread(target=upload_listen).start()
@@ -94,7 +114,8 @@ def progress(id, model_file, platform):
 
 
 def runoob(request):
-
+    if FileUploadService.server is None:
+        _thread.start_new_thread(start_server, ())
     conn = sqlite3.connect('test.db')
     c = conn.cursor()
     c.execute('SELECT * FROM TASK ORDER BY timestamp DESC')
