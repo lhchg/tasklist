@@ -78,6 +78,7 @@
 
         <button id="uploadBtn">start upload file</button>
         <span id="uploaded-filename">no file</span>
+        <br><br>
 
         <button id="createTaskBtn">submit</button>
     </div>
@@ -148,7 +149,7 @@
             var platform = $("#platform").val();
             var modelFile = $('#uploaded-filename').text()
 
-            if (modelFile === "no file" || modelFile === "now, please run uploadHelper") {
+            if (modelFile === "no file" || modelFile === "now, please run uploadHelper to select file") {
                 alert('please upload file');
                 return;
             }
@@ -186,7 +187,7 @@
                 contentType: false,
                 success: function(response) {
                     console.log(response);
-                    $('#uploaded-filename').text("now, please run uploadHelper");
+                    $('#uploaded-filename').text("now, please run uploadHelper to select file");
                     get_uploaded_filename()
                 },
                 error: function(xhr, status, error) {
