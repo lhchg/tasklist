@@ -1,0 +1,61 @@
+
+.dialog {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f9f9f9;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+th {
+    background-color: #f2f2f2;
+}
+tr:hover {
+    background-color: #f5f5f5;
+}
+
+ td {
+    max-width: 200px; /* 设置最大宽度为200像素 */
+    overflow: hidden; /* 超出部分隐藏 */
+    text-overflow: ellipsis; /* 超出部分用省略号表示 */
+    white-space: nowrap; /* 不换行 */
+ }
+
+#tip {
+    position: fixed;
+    right: 0;
+    top: 0;
+    padding: 10px;
+    background-color: #f9ed69;
+    border: 1px solid #f08a5d;
+    color: #b83b5e;
+    font-size: 14px;
+}
+#toggleArrow {
+    cursor: pointer;
+    position: absolute;
+    left: -30px; /* Adjust as needed to place the arrow outside the tip box */
+    top: 10px;
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+    line-height: 20px;
+    text-align: center;
+    background-color: #f9ed69;
+    border: 1px solid #f08a5d;
+    user-select: none;
+}
+

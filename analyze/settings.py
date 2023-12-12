@@ -31,6 +31,7 @@ MODEL_ROOT = os.path.join(BASE_DIR, 'upload')
 #MEDIA_URL = '/upload/'
 RESULT_ROOT = os.path.join(BASE_DIR, 'result')
 EXE_ROOT = os.path.join(BASE_DIR, 'exe')
+LAYUI_ROOT = os.path.join(BASE_DIR, 'layui')
 
 
 # Application definition
@@ -131,7 +132,7 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-STATIC_URL = '/static/'
+# STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "statics"),
 ]

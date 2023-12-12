@@ -15,11 +15,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path
 from . import views
 from django.urls import re_path as url
 from django.views.static import serve
+from django.conf.urls.static import static
 from . import settings
+
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -31,4 +35,5 @@ urlpatterns = [
     path('exe/<path:path>/', serve, {'document_root': settings.EXE_ROOT}),
     path('start_upload_service/', views.start_upload_service, name='start_upload_service'),
     path('get_uploaded_filename/', views.get_uploaded_filename, name='get_uploaded_filename'),
+    path('layui/<path:path>/', serve, {'document_root': settings.LAYUI_ROOT}),
 ]
