@@ -59,3 +59,39 @@ tr:hover {
     user-select: none;
 }
 
+/* for title */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+#ranking {
+	position: relative;
+	/*margin-top: 8vw;*/
+	margin-top: 1vw;
+	width: 100%;
+	text-align: center;
+}
+
+#ranking .title {
+	width: 100%;
+    font-size: 2.5vw;
+    color: #ea1d6f;
+    margin-bottom: 1vw;
+    line-height: 1;
+    font-family: "Raleway", "Arial", sans-serif;
+	line-height: 150%;
+}
+
+#ranking .performance_ranking {
+	font-size: 2.0vw;
+}
+
+#ranking .header_table th {
+	cursor: auto;
+}
+/***/
