@@ -138,6 +138,9 @@ def runoob(request):
 
     return render(request, "runoob.html", {"tasks" : tasks})
 
+def tips(request):
+    return render(request, "tips.html")
+
 def runoob_normal(request):
 
     conn = sqlite3.connect('test.db')

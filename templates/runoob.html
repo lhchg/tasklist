@@ -10,67 +10,89 @@
 <body>
 
     <script src="layui/layui.js"></script>
+    <nav>
+        <ul class="right_bar">
+            <a href="/exe/uploadHelper.exe"> <img style="width: 7.5vw; margin-top: 1.07vw; position: fixed; margin-left: -9.5vw;" src="static/media/download.png"> </a>
+        </ul>
+
+        <div id="forum_link">
+            <a href="tips">
+            <p>
+                Due to EDM policy, please use uploadHelper which can download on the right corner when upload file <span style="color: rgba(123, 142, 210, 1.0); font-weight: 700;">How to upload</span></span>
+            </p>
+            </a>
+        </div>
+
+    </nav>
     <div id="ranking">
         <div class="title">
             <th class="performance_ranking" style="vertical-align: top;">Task List</th>
         </div>
+
+<!--        <button id="newTaskBtn">New task</button>-->
+        <div class="btn">
+            <button id="newTaskBtn" type="button" class="layui-btn layui-bg-pink my-btn" style="text-align: right;">New task</button>
+        </div>
+        <div id="newTaskDialog" class="dialog">
+            <span id="closeBtn" style="cursor: pointer; position: absolute; top: 10px; right: 10px; font-size: 20px;">&times;</span>
+            {% csrf_token %}
+            <label for="platform">Platform:</label>
+            <select id="platform">
+                <option value="qcom">QCOM</option>
+                <option value="mtk">MTK</option>
+            </select>
+            <br><br>
+
+            <button id="uploadBtn">start upload file</button>
+            <span id="uploaded-filename">no file</span>
+
+            <br><br>
+
+            <button id="createTaskBtn"  style="position: absolute; bottom: 10px; right: 10px;">submit</button>
+        </div>
+        <table class="table_head">
+            <tr>
+                <th class="highlight" style="width: 10%; font-size: 1.1vw; text-align: center">Date</th>
+                <th class="highlight" style="width: 10%; font-size: 1.1vw; text-align: center">Model</th>
+                <th class="highlight" style="width: 10%; font-size: 1.1vw; text-align: center">Platform</th>
+                <th class="highlight" style="width: 10%; font-size: 1.1vw; background-color: rgba(111, 234, 108, 0.12); text-align: center">status</th>
+                <th class="highlight" style="width: 10%; font-size: 1.1vw; text-align: center">result</th>
+            </tr>
+            {% for task in tasks %}
+            <tr>
+                <td>{{ task.8 }}</td>
+                {% if task.6 %}
+                    <td><a href="/upload/{{ task.2 }}" style="color: rgba(123, 142, 255, 2.0)">{{ task.2 }}</a></td>
+                {% else %}
+                    <td>{{ task.2 }}</td>
+                {% endif %}
+                <td>{{ task.3 }}</td>
+                <td>{{ task.4 }}</td>
+                {% if task.7 %}
+                    <td><a href="/result/{{ task.5 }}" style="color: rgba(123, 142, 255, 2.0)">{{ task.5 }}</a></td>
+                {% else %}
+                    <td>{{ task.5 }}</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+        <table id="taskTable">
+
+        </table>
     </div>
 
-    <div id="tip">
-        <div id="toggleArrow">&#9654;</div>
-        Due to "EMD" policy please use uploadHelper
-        when upload file
-        <br>
-        <td><a href="/exe/uploadHelper.exe">uploadHelper for winows</a></td>
-        <br>
-<!--        <td><a href="/exe/uploadHelper">uploadHelper for Linux</a></td>-->
-    </div>
+<!--    <div id="tip">-->
+<!--        <div id="toggleArrow">&#9654;</div>-->
+<!--        Due to "EMD" policy please use uploadHelper-->
+<!--        when upload file-->
+<!--        <br>-->
+<!--        <td><a href="/exe/uploadHelper.exe">uploadHelper for winows</a></td>-->
+<!--        <br>-->
+<!--&lt;!&ndash;        <td><a href="/exe/uploadHelper">uploadHelper for Linux</a></td>&ndash;&gt;-->
+<!--    </div>-->
 
-    <button id="newTaskBtn">New task</button>
 
-    <div id="newTaskDialog" class="dialog">
-        <span id="closeBtn" style="cursor: pointer; position: absolute; top: 10px; right: 10px; font-size: 20px;">&times;</span>
-        {% csrf_token %}
-        <label for="platform">Platform:</label>
-        <select id="platform">
-            <option value="qcom">QCOM</option>
-            <option value="mtk">MTK</option>
-        </select>
-        <br><br>
 
-        <button id="uploadBtn">start upload file</button>
-        <span id="uploaded-filename">no file</span>
-
-        <br><br>
-
-        <button id="createTaskBtn"  style="position: absolute; bottom: 10px; right: 10px;">submit</button>
-    </div>
-    <table id="taskTable">
-        <tr>
-            <th>Data</th>
-            <th>Model file</th>
-			<th>Platform</th>
-            <th>Status</th>
-            <th>Result file</th>
-        </tr>
-        {% for task in tasks %}
-        <tr>
-            <td>{{ task.8 }}</td>
-            {% if task.6 %}
-                <td><a href="/upload/{{ task.2 }}">{{ task.2 }}</a></td>
-            {% else %}
-                <td>{{ task.2 }}</td>
-            {% endif %}
-            <td>{{ task.3 }}</td>
-            <td>{{ task.4 }}</td>
-            {% if task.7 %}
-                <td><a href="/result/{{ task.5 }}" download="">{{ task.5 }}</a></td>
-            {% else %}
-                <td>{{ task.5 }}</td>
-            {% endif %}
-        </tr>
-        {% endfor %}
-    </table>
     <script src="static/js/script.js"></script>
 </body>
 </html>

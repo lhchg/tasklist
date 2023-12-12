@@ -28,6 +28,7 @@ from . import settings
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('', views.runoob),
+    path('tips', views.tips),
     path('normal', views.runoob_normal),
     url(r'^create_task/$', views.create_task),
     path('upload/<path:path>/', serve, {'document_root': settings.MODEL_ROOT}),

@@ -20,6 +20,7 @@ th, td {
     padding: 8px;
     text-align: left;
 }
+
 th {
     background-color: #f2f2f2;
 }
@@ -27,12 +28,12 @@ tr:hover {
     background-color: #f5f5f5;
 }
 
- td {
+td {
     max-width: 200px; /* 设置最大宽度为200像素 */
     overflow: hidden; /* 超出部分隐藏 */
     text-overflow: ellipsis; /* 超出部分用省略号表示 */
     white-space: nowrap; /* 不换行 */
- }
+}
 
 #tip {
     position: fixed;
@@ -59,6 +60,48 @@ tr:hover {
     user-select: none;
 }
 
+/* for the top line */
+nav {
+    position: fixed;
+    top: 0;
+    font-size: 1.07vw;
+    z-index: 990;
+    height: 4.26vw;
+    line-height: 1.07vw;
+}
+nav a {
+    text-decoration: none;
+    color: #fff;
+}
+nav .right_bar {
+	position: fixed;
+	right: 0%;
+	text-align: center;
+	z-index: 999;
+}
+#forum_link {
+	position: fixed;
+	margin-top: 4.2vw;
+	height: 2.4vw;
+	width: 100%;
+	overflow: hidden;
+	text-align: center;
+	line-height: 1.6vw;
+	background: white;
+
+}
+#forum_link p {
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	padding-top: 0.4vw;
+	color: white;
+	background: rgba(239, 63, 113, 0.4);
+	word-spacing: 0.15vw;
+	font-size: 1.04vw;
+}
+/***/
+
 /* for title */
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
     margin: 0;
@@ -68,12 +111,32 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
     font: inherit;
     vertical-align: baseline;
 }
-
-#ranking {
+table {
+    line-height: 1;
+    font-family: "Raleway", "Arial", sans-serif;
+	line-height: 150%;
+}
+#ranking{
 	position: relative;
 	/*margin-top: 8vw;*/
-	margin-top: 1vw;
-	width: 100%;
+	margin-top: 8vw;
+	width: 90%;
+
+}
+
+#ranking .btn {
+    text-align: right;
+    margin-bottom: 1vw;
+}
+#ranking .my-btn {
+  background-color: rgba(239, 63, 113, 0.4);
+}
+
+#ranking .table {
+	width: 10vw;
+	margin-bottom: 4vw;
+	margin-left: 3.7vw;
+	font-size: 10vw;
 	text-align: center;
 }
 
@@ -85,6 +148,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
     line-height: 1;
     font-family: "Raleway", "Arial", sans-serif;
 	line-height: 150%;
+	text-align: center;
 }
 
 #ranking .performance_ranking {
@@ -95,3 +159,27 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 	cursor: auto;
 }
 /***/
+#ranking td {
+    text-align: center;
+    padding-bottom: 0.4vw;
+    padding-top: 0.4vw;
+}
+#ranking th{
+    color: #ea1d6f;
+    font-size: 1.8vw;
+}
+#ranking .table_head {
+	width: 100%;
+    margin-bottom: 3.64vw;
+    margin-left: 3.7vw;
+}
+
+
+#ranking table .highlight {
+	background: rgba(245, 187, 164, 0.4);
+	border-radius: 0.22vw;
+	padding-top: 0.1vw;
+	padding-bottom: 0.1vw;
+	vertical-align: middle;
+	text-decoration: none;
+}
