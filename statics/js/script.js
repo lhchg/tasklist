@@ -41,6 +41,10 @@ $("#createTaskBtn").click(function() {
         alert('please upload file');
         return;
     }
+    if (platform === "") {
+        alert('please select platform')
+        return;
+    }
 
     var formData = new FormData();
     formData.append('platform', platform);
@@ -96,22 +100,20 @@ function get_uploaded_filename() {
   });
 }
 
-
-
-var tip = document.getElementById('tip');
-var toggleArrow = document.getElementById('toggleArrow');
-
-toggleArrow.addEventListener('click', function() {
-    var isTipCollapsed = toggleArrow.innerHTML.charCodeAt(0) === 9664; // Check if the arrow is right-pointing
-    if (isTipCollapsed) {
-        // Expand the tip and change the arrow to left-pointing
-        tip.style.right = '0';
-        toggleArrow.innerHTML = '&#9654;'; // Left-pointing arrow
-    } else {
-        // Collapse the tip and change the arrow to right-pointing
-        tip.style.right = '-450px'; // Adjust as needed to hide the tip box, leaving only the arrow visible
-        toggleArrow.innerHTML = '&#9664;'; // Right-pointing arrow
-    }
-});
+//var tip = document.getElementById('tip');
+//var toggleArrow = document.getElementById('toggleArrow');
+//
+//toggleArrow.addEventListener('click', function() {
+//    var isTipCollapsed = toggleArrow.innerHTML.charCodeAt(0) === 9664; // Check if the arrow is right-pointing
+//    if (isTipCollapsed) {
+//        // Expand the tip and change the arrow to left-pointing
+//        tip.style.right = '0';
+//        toggleArrow.innerHTML = '&#9654;'; // Left-pointing arrow
+//    } else {
+//        // Collapse the tip and change the arrow to right-pointing
+//        tip.style.right = '-450px'; // Adjust as needed to hide the tip box, leaving only the arrow visible
+//        toggleArrow.innerHTML = '&#9664;'; // Right-pointing arrow
+//    }
+//});
 
 

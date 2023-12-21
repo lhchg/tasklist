@@ -33,23 +33,49 @@
         <div class="btn">
             <button id="newTaskBtn" type="button" class="layui-btn layui-bg-pink my-btn" style="text-align: right;">New task</button>
         </div>
-        <div id="newTaskDialog" class="dialog">
-            <span id="closeBtn" style="cursor: pointer; position: absolute; top: 10px; right: 10px; font-size: 20px;">&times;</span>
-            {% csrf_token %}
-            <label for="platform">Platform:</label>
-            <select id="platform">
-                <option value="qcom">QCOM</option>
-                <option value="mtk">MTK</option>
-            </select>
-            <br><br>
+<!--        <div id="newTaskDialog" class="dialog">-->
+<!--            <span id="closeBtn" style="cursor: pointer; position: absolute; top: 10px; right: 10px; font-size: 20px;">&times;</span>-->
+<!--            {% csrf_token %}-->
+<!--            <label for="platform">Platform:</label>-->
+<!--            <select id="platform">-->
+<!--                <option value="qcom">QCOM</option>-->
+<!--                <option value="mtk">MTK</option>-->
+<!--            </select>-->
+<!--            <br><br>-->
 
-            <button id="uploadBtn">start upload file</button>
+<!--            <button id="uploadBtn">start upload file</button>-->
+<!--            <span id="uploaded-filename">no file</span>-->
+
+<!--            <br><br>-->
+
+<!--            <button id="createTaskBtn"  style="position: absolute; bottom: 10px; right: 10px;">submit</button>-->
+<!--        </div>-->
+
+        <div id="newTaskDialog" class="layui-form dialog" action="">
+            <span id="closeBtn" style="cursor: pointer; position: absolute; top: 2px; right: 5px; font-size: 20px;">&times;</span>
+            <div class="layui-inline">
+              <label class="layui-form-label">platform</label>
+              <div class="layui-input-inline">
+                <select id="platform" name="modules" lay-verify="required" lay-search>
+                  <option value="">select or type search</option>
+                  <option value="qcom 8450">qcom 8450</option>
+                  <option value="mtk 6889">mtk 6889</option>
+                </select>
+              </div>
+            </div>
+
+          <div style="margin-top: 1vw">
+            <button id="uploadBtn" type="button" class="layui-btn" >start upload file</button>
             <span id="uploaded-filename">no file</span>
+          </div>
 
-            <br><br>
-
-            <button id="createTaskBtn"  style="position: absolute; bottom: 10px; right: 10px;">submit</button>
+          <div class="layui-form-item" style="margin-top: 1vw">
+            <div class="layui-input-block">
+              <button id="createTaskBtn" class="layui-btn" lay-submit lay-filter="demo1">submit</button>
+            </div>
+          </div>
         </div>
+
         <table class="table_head">
             <tr>
                 <th class="highlight" style="width: 10%; font-size: 1.1vw; text-align: center">Date</th>
@@ -90,7 +116,6 @@
 <!--        <br>-->
 <!--&lt;!&ndash;        <td><a href="/exe/uploadHelper">uploadHelper for Linux</a></td>&ndash;&gt;-->
 <!--    </div>-->
-
 
 
     <script src="static/js/script.js"></script>
