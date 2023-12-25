@@ -32,6 +32,8 @@ MODEL_ROOT = os.path.join(BASE_DIR, 'upload')
 RESULT_ROOT = os.path.join(BASE_DIR, 'result')
 EXE_ROOT = os.path.join(BASE_DIR, 'exe')
 LAYUI_ROOT = os.path.join(BASE_DIR, 'layui')
+RESOURCE_ROOT = os.path.join(BASE_DIR, 'resource')
+
 
 
 # Application definition

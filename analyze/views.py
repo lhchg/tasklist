@@ -1,3 +1,4 @@
+import subprocess
 from datetime import datetime, timedelta
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -9,6 +10,8 @@ import _thread
 import rpyc
 import threading
 from . import settings
+import json
+from django.http import JsonResponse
 
 class FileUploadService(rpyc.Service):
     uploaded_filename = None
@@ -110,7 +113,6 @@ def progress(id, model_file, platform):
 
 
 def runoob(request):
-
     conn = sqlite3.connect('test.db')
     c = conn.cursor()
     c.execute('SELECT * FROM TASK ORDER BY timestamp DESC')
@@ -135,11 +137,50 @@ def runoob(request):
         content = content + (result_file_exists, timestamp_str)
         tasks.append(content)
 
-
-    return render(request, "runoob.html", {"tasks" : tasks})
+    devices = check_devices()
+    backends = check_backend()
+    return render(request, "runoob.html", {"tasks": tasks, "devices": devices, "check_backend": check_backend})
 
 def tips(request):
     return render(request, "tips.html")
+
+def is_device_online(search_string):
+    output = subprocess.check_output(['adb', 'devices']).decode('utf-8')
+    lines = output.split("\n")
+    device_ids = [line.split()[0] for line in lines[1:] if line.strip()]
+    print(device_ids)
+    print(search_string)
+    if search_string in device_ids:
+        print(f"{search_string} is present in the device IDs.")
+        result = True
+    else:
+        print(f"{search_string} is not in the device IDs.")
+        result = False
+    return result
+
+def read_json_file(file_name):
+    contents = ""
+    try:
+        with open(file_name, 'r') as file:
+            contents = json.load(file)
+    except FileNotFoundError:
+        print('device.json file not found')
+    except json.JSONDecodeError:
+        print('Invalid JSON file')
+
+    return contents
+
+def check_devices():
+    devices = read_json_file("resource/device.json")
+
+    for device in devices:
+        device['status'] = is_device_online(device['number'])
+    return devices
+
+def check_backend():
+    backends = read_json_file("resource/backend.json")
+    return backends
+
 
 def runoob_normal(request):
 

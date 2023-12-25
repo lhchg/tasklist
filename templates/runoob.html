@@ -10,29 +10,72 @@
 <body>
 
     <script src="layui/layui.js"></script>
-    <nav>
-        <ul class="right_bar">
-            <a href="/exe/uploadHelper.exe"> <img style="width: 7.5vw; margin-top: 1.07vw; position: fixed; margin-left: -9.5vw;" src="static/media/download.png"> </a>
-        </ul>
+<!--    <nav>-->
+<!--        <ul class="right_bar">-->
+<!--            <a href="/exe/uploadHelper.exe"> <img style="width: 7.5vw; margin-top: 1.07vw; position: fixed; margin-left: -9.5vw;" src="static/media/download.png"> </a>-->
+<!--        </ul>-->
 
-        <div id="forum_link">
-            <a href="tips">
-            <p>
-                Due to EDM policy, please use uploadHelper which can download on the right corner when upload file <span style="color: rgba(123, 142, 210, 1.0); font-weight: 700;">How to upload</span></span>
-            </p>
-            </a>
+<!--        <div id="forum_link">-->
+<!--            <a href="tips">-->
+<!--            <p>-->
+<!--                Due to EDM policy, please use uploadHelper which can download on the right corner when upload file <span style="color: rgba(123, 142, 210, 1.0); font-weight: 700;">How to upload</span></span>-->
+<!--            </p>-->
+<!--            </a>-->
+<!--        </div>-->
+
+<!--    </nav>-->
+<div class="content">
+    <div class="top">
+        <div class="device">
+            <table>
+                <tr>
+                    <th>status</th>
+                    <th>name</th>
+                    <th>device id</th>
+                </tr>
+                {% for item in devices %}
+                    <tr>
+                        {% if item.status %}
+                        <td><i class="layui-icon layui-icon-success" style="color:#4CAF50"></i></td>
+                        {% else %}
+                        <td><i class="layui-icon layui-icon-error" style="color:#E64A19"></i></td>
+                        {% endif %}
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.number }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="backend">
+            <div class="layui-tab layui-tab-card">
+              <ul class="layui-tab-title">
+                <li class="layui-this">snpe</li>
+                <li>qnn</li>
+              </ul>
+              <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                     {{ check_backend.snpe|join:", " }}
+                </div>
+                <div class="layui-tab-item">
+                     {{ check_backend.qnn|join:", " }}
+                </div>
+              </div>
+            </div>
         </div>
 
-    </nav>
+    </div>
+
+
     <div id="ranking">
+
         <div class="title">
             <th class="performance_ranking" style="vertical-align: top;">Task List</th>
         </div>
 
 <!--        <button id="newTaskBtn">New task</button>-->
-        <div class="btn">
-            <button id="newTaskBtn" type="button" class="layui-btn layui-bg-pink my-btn" style="text-align: right;">New task</button>
-        </div>
+<!--        <div class="btn">-->
+<!--            <button id="newTaskBtn" type="button" class="layui-btn layui-bg-pink my-btn" style="text-align: right;">New task</button>-->
+<!--        </div>-->
 <!--        <div id="newTaskDialog" class="dialog">-->
 <!--            <span id="closeBtn" style="cursor: pointer; position: absolute; top: 10px; right: 10px; font-size: 20px;">&times;</span>-->
 <!--            {% csrf_token %}-->
@@ -106,7 +149,7 @@
 
         </table>
     </div>
-
+</div>
 <!--    <div id="tip">-->
 <!--        <div id="toggleArrow">&#9654;</div>-->
 <!--        Due to "EMD" policy please use uploadHelper-->

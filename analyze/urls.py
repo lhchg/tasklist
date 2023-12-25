@@ -34,7 +34,8 @@ urlpatterns = [
     path('upload/<path:path>/', serve, {'document_root': settings.MODEL_ROOT}),
     path('result/<path:path>/', serve, {'document_root': settings.RESULT_ROOT}),
     path('exe/<path:path>/', serve, {'document_root': settings.EXE_ROOT}),
+    path('layui/<path:path>/', serve, {'document_root': settings.LAYUI_ROOT}),
+    path('resource/<path:path>/', serve, {'document_root': settings.RESOURCE_ROOT}),
     path('start_upload_service/', views.start_upload_service, name='start_upload_service'),
     path('get_uploaded_filename/', views.get_uploaded_filename, name='get_uploaded_filename'),
-    path('layui/<path:path>/', serve, {'document_root': settings.LAYUI_ROOT}),
 ]
