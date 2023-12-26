@@ -100,6 +100,11 @@ function get_uploaded_filename() {
   });
 }
 
+
+function refreshPage() {
+  location.reload();
+}
+
 //var tip = document.getElementById('tip');
 //var toggleArrow = document.getElementById('toggleArrow');
 //

@@ -26,45 +26,88 @@
 <!--    </nav>-->
 <div class="content">
     <div class="top">
-        <div class="device">
-            <table>
-                <tr>
-                    <th>status</th>
-                    <th>name</th>
-                    <th>device id</th>
-                </tr>
-                {% for item in devices %}
-                    <tr>
-                        {% if item.status %}
-                        <td><i class="layui-icon layui-icon-success" style="color:#4CAF50"></i></td>
-                        {% else %}
-                        <td><i class="layui-icon layui-icon-error" style="color:#E64A19"></i></td>
-                        {% endif %}
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.number }}</td>
-                    </tr>
-                {% endfor %}
-            </table>
-        </div>
-        <div class="backend">
-            <div class="layui-tab layui-tab-card">
-              <ul class="layui-tab-title">
-                <li class="layui-this">snpe</li>
-                <li>qnn</li>
-              </ul>
-              <div class="layui-tab-content">
-                <div class="layui-tab-item layui-show">
-                     {{ check_backend.snpe|join:", " }}
-                </div>
-                <div class="layui-tab-item">
-                     {{ check_backend.qnn|join:", " }}
+        <div class="block_left"></div>
+        <div class="layui-bg-gray block_right" style="padding: 16px;">
+          <div class="layui-row layui-col-space15">
+            <div class="layui-col-md6">
+              <div class="layui-card">
+                <div class="layui-card-header" style="text-align: center;font-weight: bold;">device</div>
+                <div class="layui-card-body">
+                    <button type="button" class="device_button layui-btn layui-btn-radius" onclick="refreshPage()">check</button>
+                    <table class="layui-table" lay-skin="line">
+                        <thead>
+                            <tr>
+                                <th>status</th>
+                                <th>name</th>
+                                <th>device id</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in devices %}
+                                <tr>
+                                    {% if item.status %}
+                                    <td><i class="layui-icon layui-icon-success" style="color:#4CAF50"></i></td>
+                                    {% else %}
+                                    <td><i class="layui-icon layui-icon-error" style="color:#E64A19"></i></td>
+                                    {% endif %}
+                                    <td>{{ item.name }}</td>
+                                    <td>{{ item.number }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
               </div>
             </div>
+            <div class="layui-col-md6 backend_card">
+              <div class="layui-card">
+                <div class="layui-card-header" style="text-align: center;font-weight: bold;">backend</div>
+                <div class="layui-card-body">
+                  snpe: {{ check_backend.snpe|join:", " }}<br>
+                  qnn: {{ check_backend.qnn|join:", " }}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-
+     </div>
     </div>
-
+<!--        <div class="device">-->
+<!--        <button type="button" class="device_button layui-btn layui-btn-radius" onclick="refreshPage()">check</button>-->
+<!--            <table>-->
+<!--                <tr>-->
+<!--                    <th>status</th>-->
+<!--                    <th>name</th>-->
+<!--                    <th>device id</th>-->
+<!--                </tr>-->
+<!--                {% for item in devices %}-->
+<!--                    <tr>-->
+<!--                        {% if item.status %}-->
+<!--                        <td><i class="layui-icon layui-icon-success" style="color:#4CAF50"></i></td>-->
+<!--                        {% else %}-->
+<!--                        <td><i class="layui-icon layui-icon-error" style="color:#E64A19"></i></td>-->
+<!--                        {% endif %}-->
+<!--                        <td>{{ item.name }}</td>-->
+<!--                        <td>{{ item.number }}</td>-->
+<!--                    </tr>-->
+<!--                {% endfor %}-->
+<!--            </table>-->
+<!--        </div>-->
+<!--        <div class="backend">-->
+<!--            <div class="layui-tab layui-tab-card">-->
+<!--              <ul class="layui-tab-title">-->
+<!--                <li class="layui-this">snpe</li>-->
+<!--                <li>qnn</li>-->
+<!--              </ul>-->
+<!--              <div class="layui-tab-content">-->
+<!--                <div class="layui-tab-item layui-show">-->
+<!--                     {{ check_backend.snpe|join:", " }}-->
+<!--                </div>-->
+<!--                <div class="layui-tab-item">-->
+<!--                     {{ check_backend.qnn|join:", " }}-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
 
     <div id="ranking">
 

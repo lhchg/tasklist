@@ -8,7 +8,7 @@ import _thread
 
 from analyze import settings
 from analyze.views import process, top, database
-
+from django.core.paginator import Paginator
 
 def tips(request):
     return render(request, "tips.html")
@@ -52,9 +52,15 @@ def runoob(request):
         content = content + (result_file_exists, timestamp_str)
         tasks.append(content)
 
+    paginator = Paginator(tasks, 10)
+    # 获取当前页数，默认为第一页
+    page_num = request.GET.get('page', 1)
+    # 获取当前页的任务列表
+    page_tasks = paginator.get_page(page_num)
+
     devices = top.check_devices()
     backends = top.check_backend()
-    return render(request, "runoob.html", {"tasks": tasks, "devices": devices, "check_backend": backends})
+    return render(request, "task.html", {"tasks": page_tasks, "devices": devices, "check_backend": backends})
 
 
 
