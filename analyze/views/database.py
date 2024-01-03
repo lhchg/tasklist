@@ -16,3 +16,11 @@ def update_database(id, result_file, model_file):
     c.execute("UPDATE TASK set STATUS = 'done', RESULT_FILE = ? where ID= ?", (result_file, id))
     conn.commit()
     conn.close()
+
+def select_database():
+    conn = sqlite3.connect('test.db')
+    c = conn.cursor()
+    c.execute('SELECT * FROM TASK ORDER BY timestamp DESC')
+    contents = c.fetchall()
+    conn.close()
+    return contents

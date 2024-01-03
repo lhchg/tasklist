@@ -4,6 +4,7 @@ import threading
 import time
 from django.http import HttpResponse
 
+# deprecate
 class FileUploadService(rpyc.Service):
     uploaded_filename = None
     server = None
@@ -29,6 +30,7 @@ class FileUploadService(rpyc.Service):
             time.sleep(2)
             FileUploadService.server.close()
 
+# deprecate
 def get_uploaded_filename(request):
     print("get_uploaded_filename")
     uploaded_filename = None
@@ -39,6 +41,7 @@ def get_uploaded_filename(request):
     print(uploaded_filename)
     return HttpResponse(uploaded_filename)
 
+# deprecate
 def upload_listen():
     if FileUploadService.server:
         FileUploadService.server.close()
@@ -46,6 +49,7 @@ def upload_listen():
     FileUploadService.server = server
     server.start()
 
+# deprecate
 def start_upload_service(request):
     threading.Thread(target=upload_listen).start()
     return HttpResponse('start upload！')

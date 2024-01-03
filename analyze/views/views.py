@@ -7,17 +7,20 @@ import sqlite3
 import _thread
 
 from analyze import settings
-from analyze.views import process, top, database
+from analyze.views import process, backend, database
 from django.core.paginator import Paginator
 
+# deprecate
 def tips(request):
     return render(request, "tips.html")
 
 
+# deprecate
 def save_file(model_file, platform):
     id = database.insert_database(model_file, platform)
     return id
 
+# deprecate
 def save_file_normal(model_file, platform):
     save_path = os.path.join(settings.MODEL_ROOT, model_file.name)
     with open(save_path, 'wb') as destination:
@@ -28,11 +31,10 @@ def save_file_normal(model_file, platform):
     return id
 
 def runoob(request):
-    conn = sqlite3.connect('test.db')
-    c = conn.cursor()
-    c.execute('SELECT * FROM TASK ORDER BY timestamp DESC')
-    contents = c.fetchall()
-    conn.close()
+    client_ip = request.META.get('REMOTE_ADDR')
+    print("REMOTE_ADDR:", client_ip)
+
+    contents = database.select_database()
 
     tasks = []
     for content in contents:
@@ -53,17 +55,15 @@ def runoob(request):
         tasks.append(content)
 
     paginator = Paginator(tasks, 10)
-    # 获取当前页数，默认为第一页
     page_num = request.GET.get('page', 1)
-    # 获取当前页的任务列表
     page_tasks = paginator.get_page(page_num)
 
-    devices = top.check_devices()
-    backends = top.check_backend()
+    devices = backend.check_devices()
+    backends = backend.check_backend()
     return render(request, "task.html", {"tasks": page_tasks, "devices": devices, "check_backend": backends})
 
 
-
+# deprecate
 def runoob_normal(request):
 
     conn = sqlite3.connect('test.db')
@@ -95,6 +95,7 @@ def runoob_normal(request):
 
 
 
+# deprecate
 def create_task(request):
     if request.method == 'POST':
         model_file = request.POST.get('modelFile')
@@ -108,6 +109,7 @@ def create_task(request):
 
     return HttpResponse('task completed')
 
+# deprecate
 def create_task_normal(request):
     if request.method == 'POST':
         model_file = request.FILES['modelFile']

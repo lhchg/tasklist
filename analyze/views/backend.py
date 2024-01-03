@@ -7,7 +7,7 @@ def read_json_file(file_name):
         with open(file_name, 'r') as file:
             contents = json.load(file)
     except FileNotFoundError:
-        print('device.json file not found')
+        print(f'{file_name} file not found')
     except json.JSONDecodeError:
         print('Invalid JSON file')
 

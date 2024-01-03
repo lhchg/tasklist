@@ -4,7 +4,12 @@ import os
 from analyze.views import database
 
 
+# deprecate
 def progress(id, model_file, platform):
+    # TODO
+    # do process for the model_file and 
+    # write result to the result file
+
     time.sleep(10)
     cal_file = "upload/" + model_file
     size = os.path.getsize(cal_file)
@@ -22,4 +27,5 @@ def progress(id, model_file, platform):
     with open(filename, 'w') as f:
         f.write(file_size_info + "\n")
         f.write(platform)
+
     database.update_database(id, result_file, model_file)
