@@ -20,7 +20,6 @@
     <link rel="stylesheet" type="text/css" href="static/css/task_styles.css">
 </head>
 <body>
-<!--[if lte IE 9]><p class="browsehappy">please update your browser！ <a href="http://se.360.cn/" target="_blank">update browser</a>for a better experience！</p><![endif]-->
 <script src="layui/layui.js"></script>
 <script src="static/js/task_script.js"></script>
 
@@ -33,18 +32,14 @@
   <div class="nav-navicon admin-main admin-sidebar">
     <div class="sideMenu am-icon-dashboard" style="color:#aeb2b7; margin: 10px 0 0 0;"> supported backend</div>
         <div class="sideMenu">
-          <h3 class="am-icon-flag"><em></em> <a href="#">qnn</a></h3>
-          <ul>
-            {% for item in check_backend.qnn %}
-              <li> {{ item }}{% if not forloop.last %} {% endif %}<li>
+            {% for key, values in check_backend.items %}
+              <h3 class="am-icon-flag"><em></em> <a href="#">{{ key }}</a></h3>
+              <ul>
+                {% for item in values %}
+                  <li> {{ item }}{% if not forloop.last %} {% endif %}</li>
+                {% endfor %}
+              </ul>
             {% endfor %}
-          </ul>
-          <h3 class="am-icon-flag"><em></em> <a href="#">snpe</a></h3>
-          <ul>
-            {% for item in check_backend.snpe %}
-              <li> {{ item }}{% if not forloop.last %} {% endif %}<li>
-            {% endfor %}
-          </ul>
         </div>
 
         <script type="text/javascript">
@@ -144,18 +139,6 @@
     </div>
 </div>
 
-
-<!--[if lt IE 9]>
-<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
-<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
-<script src="static/assets/js/polyfill/rem.min.js"></script>
-<script src="static/assets/js/polyfill/respond.min.js"></script>
-<script src="static/assets/js/amazeui.legacy.js"></script>
-<![endif]-->
-
-<!--[if (gte IE 9)|!(IE)]><!-->
-<script src="static/assets/js/amazeui.min.js"></script>
-<!--<![endif]-->
 
 </body>
 </html>
