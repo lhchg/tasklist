@@ -21,6 +21,8 @@ from django.urls import re_path as url
 from django.views.static import serve
 from . import settings
 
+from django.conf.urls.static import static
+
 
 
 urlpatterns = [
@@ -37,3 +39,4 @@ urlpatterns = [
     path('start_upload_service/', upload.start_upload_service, name='start_upload_service'),
     path('get_uploaded_filename/', upload.get_uploaded_filename, name='get_uploaded_filename'),
 ]
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

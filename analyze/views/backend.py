@@ -1,17 +1,18 @@
 import subprocess
 import json
 
-def read_json_file(file_name):
-    contents = ""
-    try:
-        with open(file_name, 'r') as file:
-            contents = json.load(file)
-    except FileNotFoundError:
-        print(f'{file_name} file not found')
-    except json.JSONDecodeError:
-        print('Invalid JSON file')
+import sys
+import os
 
-    return contents
+dlSystemDir = os.getenv('DL_SYSTEM_PATH')
+if dlSystemDir is not None:
+    sys.path.append("%s/rpc_server/config" % dlSystemDir)
+else:
+    print("please set DL_SYSTEM_PATH")
+    sys.exit()
+
+from config_parser import device_parser, backend_parser
+
 
 def is_device_online(search_string):
     output = subprocess.check_output(['adb', 'devices']).decode('utf-8')
@@ -28,12 +29,16 @@ def is_device_online(search_string):
     return result
 
 def check_backend():
-    backends = read_json_file("resource/backend.json")
+    backends = backend_parser()
+    backends = json.loads(backends)
     return backends
 
 def check_devices():
-    devices = read_json_file("resource/device.json")
+    devices = device_parser()
+    devices = json.loads(devices)
 
     for device in devices:
+        print(device)
+
         device['status'] = is_device_online(device['number'])
     return devices

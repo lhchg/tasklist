@@ -36,25 +36,29 @@ def runoob(request):
 
     contents = database.select_database()
 
-    tasks = []
+    #tasks = []
+    #for content in contents:
+    #    timestamp = content[1]
+    #    timestamp = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S') + timedelta(hours=8)
+    #    timestamp_str = timestamp.strftime('%Y-%m-%d %H:%M:%S')
+
+    #    upload_file = "upload/" + content[2]
+    #    model_file_exists = os.path.exists(upload_file)
+    #    content = content + (model_file_exists,)
+    #    if content[5] is not None:
+    #        result_file = "result/" + content[5]
+    #        result_file_exists = os.path.exists(result_file)
+
+    #    else:
+    #        result_file_exists = False
+    #    content = content + (result_file_exists, timestamp_str)
+    #    tasks.append(content)
     for content in contents:
-        timestamp = content[1]
-        timestamp = datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S') + timedelta(hours=8)
-        timestamp_str = timestamp.strftime('%Y-%m-%d %H:%M:%S')
+        timestamp = content["timestamp"]
+        content["timestamp"] = (datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S') + timedelta(hours=8)).strftime('%Y-%m-%d %H:%M:%S')
+    bm_path = os.getenv('DL_SYSTEM_PATH', './')
 
-        upload_file = "upload/" + content[2]
-        model_file_exists = os.path.exists(upload_file)
-        content = content + (model_file_exists,)
-        if content[5] is not None:
-            result_file = "result/" + content[5]
-            result_file_exists = os.path.exists(result_file)
-
-        else:
-            result_file_exists = False
-        content = content + (result_file_exists, timestamp_str)
-        tasks.append(content)
-
-    paginator = Paginator(tasks, 10)
+    paginator = Paginator(contents, 10)
     page_num = request.GET.get('page', 1)
     page_tasks = paginator.get_page(page_num)
 

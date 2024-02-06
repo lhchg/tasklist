@@ -30,7 +30,7 @@
 
 <div class="am-cf admin-main">
   <div class="nav-navicon admin-main admin-sidebar">
-    <div class="sideMenu am-icon-dashboard" style="color:#aeb2b7; margin: 10px 0 0 0;"> supported backend</div>
+    <div class="sideMenu am-icon-dashboard" style="color:#aeb2b7; margin: 10px 0 0 0;"> supported sdk</div>
         <div class="sideMenu">
             {% for key, values in check_backend.items %}
               <h3 class="am-icon-flag"><em></em> <a href="#">{{ key }}</a></h3>
@@ -68,13 +68,19 @@
         <table class="layui-table" id="ID-table-demo-init">
             <tr>
                 <th style="width: 10%; font-size: 1.1vw; text-align: center">Date</th>
-                <th style="width: 10%; font-size: 1.1vw; text-align: center">Model</th>
+                <th style="width: 10%; font-size: 1.1vw; text-align: center">Model Name</th>
                 <th style="width: 10%; font-size: 1.1vw; text-align: center">Platform</th>
-                <th style="width: 10%; font-size: 1.1vw; background-color: rgba(111, 234, 108, 0.12); text-align: center">status</th>
-                <th style="width: 10%; font-size: 1.1vw; text-align: center">result</th>
+                <th style="width: 10%; font-size: 1.1vw; text-align: center">SDK Name</th>
+                <th style="width: 10%; font-size: 1.1vw; text-align: center">SDK Version</th>
+                <th style="width: 10%; font-size: 1.1vw; text-align: center">Backend</th>
+                <th style="width: 10%; font-size: 1.1vw; text-align: center">Data Type</th>
+                <th style="width: 10%; font-size: 1.1vw; background-color: rgba(111, 234, 108, 0.12); text-align: center">Latency(s)</th>
+                <!--th style="width: 10%; font-size: 1.1vw; background-color: rgba(111, 234, 108, 0.12); text-align: center">status</th-->
+                <!--th style="width: 10%; font-size: 1.1vw; text-align: center">result</th-->
             </tr>
             {% for task in tasks %}
             <tr>
+                <!--
                 <td style="text-align: center">{{ task.8 }}</td>
                 {% if task.6 %}
                     <td style="text-align: center"><a href="/upload/{{ task.2 }}" style="color: rgba(123, 142, 255, 2.0)">{{ task.2 }}</a></td>
@@ -87,6 +93,17 @@
                     <td style="text-align: center"><a href="/result/{{ task.5 }}" style="color: rgba(123, 142, 255, 2.0)">{{ task.5 }}</a></td>
                 {% else %}
                     <td style="text-align: center">{{ task.5 }}</td>
+                {% endif %}
+                -->
+                {% if task.VALID %}
+                    <td style="text-align: center">{{ task.timestamp }}</td>
+                    <td style="text-align: center">{{ task.MODULE_FILE_NAME }}</td>
+                    <td style="text-align: center">{{ task.PALTFORM }}</td>
+                    <td style="text-align: center">{{ task.SDK_NAME }}</td>
+                    <td style="text-align: center">{{ task.SDK_VERSION }}</td>
+                    <td style="text-align: center">{{ task.SUBDEV }}</td>
+                    <td style="text-align: center">{{ task.DATA_TYPE }}</td>
+                    <td style="text-align: center; background-color: rgba(111, 234, 108, 0.12)">{{ task.LATENCY }}</td>
                 {% endif %}
             </tr>
             {% endfor %}
@@ -121,6 +138,7 @@
                    </thead>
                    <tbody>
                        {% for item in devices %}
+                           {% if item.status %}
                            <tr>
                                {% if item.status %}
                                <td style="text-align: center"><i class="layui-icon layui-icon-success" style="color:#4CAF50"></i></td>
@@ -130,6 +148,7 @@
                                <td style="text-align: center">{{ item.name }}</td>
                                <td style="text-align: center">{{ item.number }}</td>
                            </tr>
+                           {% endif %}
                        {% endfor %}
                    </tbody>
                </table>

@@ -34,6 +34,9 @@ EXE_ROOT = os.path.join(BASE_DIR, 'exe')
 LAYUI_ROOT = os.path.join(BASE_DIR, 'layui')
 RESOURCE_ROOT = os.path.join(BASE_DIR, 'resource')
 
+# for package
+STATIC_ROOT = os.path.join(BASE_DIR, 'static', 'static_root')
+
 
 
 # Application definition
