@@ -1,0 +1,66 @@
+{
+"snpe":
+    {
+      "2.14.0.230828":{
+            "python_version":"3.8",
+            "addition_pylibs":
+                {
+                    "tflite":"2.3.0",
+                    "tensorflow":"2.10.1",
+                    "torch":"1.8.1",
+					"onnx":"1.11.0"
+                }
+        },
+        "2.18.0.240101":{
+		"same":"2.14.0.230828"
+        },
+        "2.19.0.240124":{
+		"same":"2.14.0.230828"
+        },
+        "2.19.2.240210":{
+		"same":"2.14.0.230828"
+        }
+    },
+"neuron":
+	{
+        "neuropilot-sdk-basic-6.0.3-build20230118":{
+            "python_version":"3.6",
+			"addition_requirement":"setup/requirement_neuropilot-sdk-basic-6.0.3-build20230118.txt",
+			"addition_py_whl":"third_party/neuron/neuropilot-sdk-basic-6.0.3-build20230118/offline_tool/mtk_converter-2.9.0-cp36-cp36m-manylinux_2_5_x86_64.manylinux1_x86_64.whl",
+			"depend_lib":"libneuron_runtime.6.so"
+        }
+	},
+"tflite":
+    {
+        "2.9.3":{
+            "sdk_version":"2.9.3",
+            "python_version":"3.8"
+        }
+
+    },
+"qnn":
+    {
+        "2.14.0.230828":{
+            "python_version":"3.8",
+            "addition_pylibs":
+                {
+                    "tflite":"2.3.0"
+                }
+        },
+        "2.18.0.240101":{
+            "python_version":"3.8",
+            "addition_pylibs":
+                {
+                    "tflite":"2.3.0",
+                    "psutil":"5.9.8",
+                    "typing_extensions":"4.10.0"
+                }
+        },
+        "2.19.0.240124":{
+            "same":"2.18.0.240101"
+        },
+        "2.19.2.240210":{
+            "same":"2.18.0.240101"
+        }
+    }
+}
